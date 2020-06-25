@@ -1,0 +1,44 @@
+
+Task1:::::::
+db.getCollection('assign-records').find({"NoOfAward": {$gte: 1}})
+
+
+Task2:::::::
+db.getCollection('assign-records').find({"Year": {$gte: 2016}})
+
+
+Task3:::::::
+db.getCollection('assign-records').aggregate([{
+    "$group" : { 
+        "_id" : "$AuthorName",
+        "totalBookSold": { "$sum": "$NoOfBookSold" },
+        "totalProfit" : { 
+            "$sum" : { 
+                "$multiply" : ["$Price", "$NoOfBookSold"]
+            }
+        }
+    }
+}]);
+
+
+Task4::::::::
+db.getCollection('assign-records').aggregate([
+  
+   { $group: { _id: "$AuthorName", "totakBookPrice" :{"$sum" : "$Price"} } },
+   { $project: { _id: "$_id",{$and : [{$gte:"$BirthDate"},{$gte: "$totakBookPrice"}]}}}
+
+])
+
+
+
+Please insert data like this:
+{
+	"BookName": "Bhimrao Ambedkar: The Boy Who Asked Why?",
+	"AuthorName" : "Sowmya Rajendran",
+	"NoOfAward" : 3,
+	"Year" : 2016,
+	"Price" : 300,
+	"NoOfBookSold" : 5,
+	"Dob" : ISODate("1931-10-12T04:00:00.000Z")
+}
+
